@@ -30,16 +30,17 @@ Este módulo se ha registrado y está disponible en el canal de YouTube de desar
 
 |        Roles         |                            Autores (es)                             |
 | -------------------- | ---------------------------------------------------------------- |
-| Manuales de laboratorio/diapositivas | Andrew Connell (MVP de Microsoft, Voitanos) @andrewconnell          |
-| FRECUENTES                   | Julia Turner (MVP de Microsoft, Sympraxis Consulting) @juliemturner |
-| Patrocinador/soporte técnico    | @Yinaa áreas de Yina (Microsoft)                                   |
+| Manuales de laboratorio/diapositivas | Andrew Connell (MVP de Microsoft, Voitanos)@andrewconnell          |
+| FRECUENTES                   | Julia Turner (MVP de Microsoft, Sympraxis Consulting)@juliemturner |
+| Patrocinador/soporte técnico    | Áreas de Yina (Microsoft)@yinaa                                   |
 
 ## <a name="version-history"></a>Historial de versiones
 
 | Versión |        Fecha        |                       Comentarios                       |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.7     | 4 de abril de 2018      | actualización del contenido de 2019Q3                               |
 | 1.6     | 18 de diciembre de 2018  | actualización del contenido de 2019Q2                               |
-| 1.5     | 27 de noviembre de 2018  | Incorporado a docs.microsoft.com/graph                |
+| 1,5     | 27 de noviembre de 2018  | Incorporado a docs.microsoft.com/graph                |
 | 1.4     | 12 de septiembre de 2018 | actualización del contenido de 2019Q1                               |
 | 1.3     | 24 de agosto de 2018    | Módulos reVisados para la coherencia con otras capacitaciones. |
 | 1.2     | 28 de junio de 2018      | Se ha agregado una screencast.                                    |
