@@ -1,44 +1,40 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-<span data-ttu-id="71c67-101">En este ejercicio, creará un nuevo registro de aplicaciones Web de Azure AD mediante el portal de registro de aplicaciones (ARP).</span><span class="sxs-lookup"><span data-stu-id="71c67-101">In this exercise, you will create a new Azure AD web application registration using the Application Registry Portal (ARP).</span></span>
+<span data-ttu-id="72f7f-101">En este ejercicio, creará un nuevo registro de aplicaciones Web de Azure AD con el centro de administración de Azure Active Directory.</span><span class="sxs-lookup"><span data-stu-id="72f7f-101">In this exercise, you will create a new Azure AD web application registration using the Azure Active Directory admin center.</span></span>
 
-1. <span data-ttu-id="71c67-102">Abra un explorador y vaya al [portal de registro de aplicaciones](https://apps.dev.microsoft.com).</span><span class="sxs-lookup"><span data-stu-id="71c67-102">Open a browser and navigate to the [Application Registration Portal](https://apps.dev.microsoft.com).</span></span> <span data-ttu-id="71c67-103">Inicie sesión con una **cuenta personal** (también conocido como Microsoft Account) o una **cuenta profesional o educativa**.</span><span class="sxs-lookup"><span data-stu-id="71c67-103">Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.</span></span>
-
-1. <span data-ttu-id="71c67-104">Seleccione **Agregar una aplicación** en la parte superior de la página.</span><span class="sxs-lookup"><span data-stu-id="71c67-104">Select **Add an app** at the top of the page.</span></span>
-
-    > [!NOTE]
-    > <span data-ttu-id="71c67-105">Si ve más de un botón **Agregar una aplicación** en la página, seleccione el que corresponda a la lista de **aplicaciones convergentes** .</span><span class="sxs-lookup"><span data-stu-id="71c67-105">If you see more than one **Add an app** button on the page, select the one that corresponds to the **Converged apps** list.</span></span>
-
-1. <span data-ttu-id="71c67-106">En la página **registrar la aplicación** , establezca el **nombre** de la aplicación en el **tutorial de ASP.net Graph** y seleccione **crear**.</span><span class="sxs-lookup"><span data-stu-id="71c67-106">On the **Register your application** page, set the **Application Name** to **ASP.NET Graph Tutorial** and select **Create**.</span></span>
-
-    ![Captura de pantalla de la creación de una nueva aplicación en el sitio web del portal de registro de aplicaciones](./images/arp-create-app-01.png)
-
-1. <span data-ttu-id="71c67-108">En la página **registro del tutorial de ASP.net Graph** , en la sección **propiedades** , copie el **identificador de aplicación** tal y como lo necesitará más adelante.</span><span class="sxs-lookup"><span data-stu-id="71c67-108">On the **ASP.NET Graph Tutorial Registration** page, under the **Properties** section, copy the **Application Id** as you will need it later.</span></span>
-
-    ![Captura de pantalla del identificador de la aplicación recién creada](./images/arp-create-app-02.png)
-
-1. <span data-ttu-id="71c67-110">Desplácese hacia abajo hasta la sección secretos de la **aplicación** .</span><span class="sxs-lookup"><span data-stu-id="71c67-110">Scroll down to the **Application Secrets** section.</span></span>
-
-    1. <span data-ttu-id="71c67-111">Seleccione **generar nueva contraseña**.</span><span class="sxs-lookup"><span data-stu-id="71c67-111">Select **Generate New Password**.</span></span>
-    1. <span data-ttu-id="71c67-112">En el cuadro de diálogo **nueva contraseña generada** , copie el contenido del cuadro tal y como lo necesitará más adelante.</span><span class="sxs-lookup"><span data-stu-id="71c67-112">In the **New password generated** dialog, copy the contents of the box as you will need it later.</span></span>
-
-        > <span data-ttu-id="71c67-113">**Importante:** Esta contraseña no se vuelve a mostrar nunca, por lo que debe asegurarse de que la copia ahora.</span><span class="sxs-lookup"><span data-stu-id="71c67-113">**Important:** This password is never shown again, so make sure you copy it now.</span></span>
-
-    ![Captura de pantalla de la contraseña de la aplicación recién creada](./images/arp-create-app-03.png)
-
-1. <span data-ttu-id="71c67-115">DeTermine la dirección URL de la aplicación de ASP.NET.</span><span class="sxs-lookup"><span data-stu-id="71c67-115">Determine your ASP.NET app's URL.</span></span> <span data-ttu-id="71c67-116">En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** .</span><span class="sxs-lookup"><span data-stu-id="71c67-116">In Visual Studio's Solution Explorer, select the **graph-tutorial** project.</span></span> <span data-ttu-id="71c67-117">En la ventana **propiedades** , busque el valor de **dirección URL**.</span><span class="sxs-lookup"><span data-stu-id="71c67-117">In the **Properties** window, find the value of **URL**.</span></span> <span data-ttu-id="71c67-118">Copie este valor.</span><span class="sxs-lookup"><span data-stu-id="71c67-118">Copy this value.</span></span>
+1. <span data-ttu-id="72f7f-102">DeTermine la dirección URL de la aplicación de ASP.NET.</span><span class="sxs-lookup"><span data-stu-id="72f7f-102">Determine your ASP.NET app's URL.</span></span> <span data-ttu-id="72f7f-103">En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** .</span><span class="sxs-lookup"><span data-stu-id="72f7f-103">In Visual Studio's Solution Explorer, select the **graph-tutorial** project.</span></span> <span data-ttu-id="72f7f-104">En la ventana **propiedades** , busque el valor de **dirección URL**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-104">In the **Properties** window, find the value of **URL**.</span></span> <span data-ttu-id="72f7f-105">Copie este valor.</span><span class="sxs-lookup"><span data-stu-id="72f7f-105">Copy this value.</span></span>
 
     ![Captura de pantalla de la ventana Propiedades de Visual Studio](./images/vs-project-url.png)
 
-1. <span data-ttu-id="71c67-120">Desplácese hacia abajo hasta la sección **plataformas** .</span><span class="sxs-lookup"><span data-stu-id="71c67-120">Scroll down to the **Platforms** section.</span></span>
+1. <span data-ttu-id="72f7f-107">Abra un explorador y vaya al [centro de administración de Azure Active Directory](https://aad.portal.azure.com).</span><span class="sxs-lookup"><span data-stu-id="72f7f-107">Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com).</span></span> <span data-ttu-id="72f7f-108">Inicie sesión con una **cuenta personal** (también conocido como Microsoft Account) o una **cuenta profesional o educativa**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-108">Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.</span></span>
 
-    1. <span data-ttu-id="71c67-121">Seleccione **Agregar plataforma**.</span><span class="sxs-lookup"><span data-stu-id="71c67-121">Select **Add Platform**.</span></span>
-    1. <span data-ttu-id="71c67-122">En el cuadro de diálogo **Agregar plataforma** , seleccione **Web**.</span><span class="sxs-lookup"><span data-stu-id="71c67-122">In the **Add Platform** dialog, select **Web**.</span></span>
+1. <span data-ttu-id="72f7f-109">Seleccione **Azure Active Directory** en el panel de navegación de la izquierda y, después, seleccione **registros de aplicaciones (vista previa)** en **administrar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-109">Select **Azure Active Directory** in the left-hand navigation, then select **App registrations (Preview)** under **Manage**.</span></span>
 
-        ![Captura de pantalla que crea una plataforma para la aplicación](./images/arp-create-app-04.png)
+    ![<span data-ttu-id="72f7f-110">Una captura de pantalla de los registros de la aplicación</span><span class="sxs-lookup"><span data-stu-id="72f7f-110">A screenshot of the App registrations</span></span> ](./images/aad-portal-app-registrations.png)
 
-    1. <span data-ttu-id="71c67-124">En el cuadro plataforma **Web** , escriba la dirección URL que copió de las propiedades del proyecto de Visual Studio para las **direcciones URL**de redireccionamiento.</span><span class="sxs-lookup"><span data-stu-id="71c67-124">In the **Web** platform box, enter the URL you copied from the Visual Studio project's properties for the **Redirect URLs**.</span></span>
+1. <span data-ttu-id="72f7f-111">Seleccione **registro nuevo**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-111">Select **New registration**.</span></span> <span data-ttu-id="72f7f-112">En la página **registrar una aplicación** , establezca los valores de la siguiente manera.</span><span class="sxs-lookup"><span data-stu-id="72f7f-112">On the **Register an application** page, set the values as follows.</span></span>
 
-        ![Captura de pantalla de la plataforma web recién agregada para la aplicación](./images/arp-create-app-05.png)
+    - <span data-ttu-id="72f7f-113">Establezca **el nombre** en `ASP.NET Graph Tutorial`.</span><span class="sxs-lookup"><span data-stu-id="72f7f-113">Set **Name** to `ASP.NET Graph Tutorial`.</span></span>
+    - <span data-ttu-id="72f7f-114">Establezca **tipos de cuenta compatibles** en **cuentas de cualquier directorio de la organización y cuentas personales de Microsoft**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-114">Set **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts**.</span></span>
+    - <span data-ttu-id="72f7f-115">En **URI**de redireccionamiento, establezca la primera lista desplegable para `Web` y establezca el valor en la dirección URL de la aplicación de ASP.net que copió en el paso 1.</span><span class="sxs-lookup"><span data-stu-id="72f7f-115">Under **Redirect URI**, set the first drop-down to `Web` and set the value to the ASP.NET app URL you copied in step 1.</span></span>
 
-1. <span data-ttu-id="71c67-126">Desplácese hasta la parte inferior de la página y seleccione **Guardar**.</span><span class="sxs-lookup"><span data-stu-id="71c67-126">Scroll to the bottom of the page and select **Save**.</span></span>
+    ![Captura de pantalla de la página registrar una aplicación](./images/aad-register-an-app.png)
+
+1. <span data-ttu-id="72f7f-117">Elija **registrar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-117">Choose **Register**.</span></span> <span data-ttu-id="72f7f-118">En la página **tutorial de ASP.net Graph** , copie el valor del **identificador de la aplicación (cliente)** y guárdelo, lo necesitará en el paso siguiente.</span><span class="sxs-lookup"><span data-stu-id="72f7f-118">On the **ASP.NET Graph Tutorial** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.</span></span>
+
+    ![Captura de pantalla del identificador de la aplicación del nuevo registro de la aplicación](./images/aad-application-id.png)
+
+1. <span data-ttu-id="72f7f-120">Seleccione **autenticación** en **administrar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-120">Select **Authentication** under **Manage**.</span></span> <span data-ttu-id="72f7f-121">Busque la sección **concesión implícita** y habilite los tokens de **identificación**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-121">Locate the **Implicit grant** section and enable **ID tokens**.</span></span> <span data-ttu-id="72f7f-122">Elija **Guardar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-122">Choose **Save**.</span></span>
+
+    ![Captura de pantalla de la sección de concesión implícita](./images/aad-implicit-grant.png)
+
+1. <span data-ttu-id="72f7f-124">Seleccione **certificados & secretos** en **administrar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-124">Select **Certificates & secrets** under **Manage**.</span></span> <span data-ttu-id="72f7f-125">Seleccione el botón **nuevo secreto de cliente** .</span><span class="sxs-lookup"><span data-stu-id="72f7f-125">Select the **New client secret** button.</span></span> <span data-ttu-id="72f7f-126">Escriba un valor en **Descripción** y seleccione una de las opciones para **Expires** y elija **Agregar**.</span><span class="sxs-lookup"><span data-stu-id="72f7f-126">Enter a value in **Description** and select one of the options for **Expires** and choose **Add**.</span></span>
+
+    ![Captura de pantalla del cuadro de diálogo Agregar un secreto de cliente](./images/aad-new-client-secret.png)
+
+1. <span data-ttu-id="72f7f-128">Copie el valor de secreto de cliente antes de salir de esta página.</span><span class="sxs-lookup"><span data-stu-id="72f7f-128">Copy the client secret value before you leave this page.</span></span> <span data-ttu-id="72f7f-129">Lo necesitará en el paso siguiente.</span><span class="sxs-lookup"><span data-stu-id="72f7f-129">You will need it in the next step.</span></span>
+
+    > [!IMPORTANT]
+    > <span data-ttu-id="72f7f-130">Este secreto de cliente no se vuelve a mostrar nunca, así que asegúrese de copiarlo ahora.</span><span class="sxs-lookup"><span data-stu-id="72f7f-130">This client secret is never shown again, so make sure you copy it now.</span></span>
+
+    ![Captura de pantalla del secreto de cliente recién agregado](./images/aad-copy-client-secret.png)
