@@ -4,7 +4,7 @@ Este módulo le presentará cómo trabajar con el SDK de Microsoft Graph .NET en
 
 ## <a name="lab---build-mvc-apps-with-the-microsoft-graph-net-sdk"></a>Laboratorio: creación de aplicaciones de MVC con el SDK de Microsoft Graph .NET
 
-En este laboratorio, creará una aplicación MVC de ASP.NET, configurada con Azure Active Directory (Azure AD) para la autenticación & Authorization, que tiene acceso a los datos de Office 365 mediante el SDK de Microsoft Graph .NET.
+En este laboratorio, creará una aplicación MVC de ASP.NET, configurada con Azure Active Directory (Azure AD) para la autenticación & autorización, que tiene acceso a los datos de Office 365 mediante el SDK de Microsoft Graph .NET.
 
 - [Tutorial de Microsoft Graph ASP.NET](https://docs.microsoft.com/graph/training/aspnet-tutorial)
 
@@ -28,16 +28,18 @@ Este módulo se ha registrado y está disponible en el canal de YouTube de desar
 
 ## <a name="contributors"></a>Colaboradores
 
-|        Roles         |                            Autores (es)                             |
-| -------------------- | ---------------------------------------------------------------- |
-| Manuales de laboratorio/diapositivas | Andrew Connell (MVP de Microsoft, Voitanos) @andrewconnell          |
-| FRECUENTES                   | Julia Turner (MVP de Microsoft, Sympraxis Consulting) @juliemturner |
-| Patrocinador/soporte técnico    | @Yinaa áreas de Yina (Microsoft)                                   |
+| Roles                | Autores (es)                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| Manuales de laboratorio/diapositivas | Andrew Connell (MVP de Microsoft, Voitanos) [@andrewconnell](//github.com/andrewconnell)         |
+| FRECUENTES                   | Rob Windsor (MVP de Microsoft, grupo PAIT) [@rob-Windsor](//github.com/rob-windsor)              |
+| FRECUENTES                   | Julia Turner (MVP de Microsoft, Sympraxis Consulting) [@juliemturner](//github.com/juliemturner) |
+| Patrocinador/soporte técnico    | [@Yinaa](//github.com/yinaa) áreas de Yina (Microsoft)                                          |
 
 ## <a name="version-history"></a>Historial de versiones
 
-| Versión |        Fecha        |                       Comentarios                       |
+| Versión | Fecha               | Comentarios                                             |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.8     | 29 de mayo de 2018       | actualización del contenido de 2019Q4                               |
 | 1.7     | 4 de abril de 2018      | actualización del contenido de 2019Q3                               |
 | 1.6     | 18 de diciembre de 2018  | actualización del contenido de 2019Q2                               |
 | 1.5     | 27 de noviembre de 2018  | Incorporado a docs.microsoft.com/graph                |
@@ -49,6 +51,6 @@ Este módulo se ha registrado y está disponible en el canal de YouTube de desar
 
 ## <a name="disclaimer"></a>Aviso de declinación de responsabilidades
 
-**Este código se proporciona *tal cual* sin garantías de ningún tipo, ya sea expresa o implícita, incluidas las garantías implícitas de idoneidad para un fin determinado, comerciabilidad o ausencia de infracción.**
+**Este código se proporciona _tal cual_ sin garantías de ningún tipo, ya sea expresa o implícita, incluidas las garantías implícitas de idoneidad para un fin determinado, comerciabilidad o ausencia de infracción.**
 
 <img src="https://telemetry.sharepointpnp.com/msgraph-training-aspnetmvcapp" />
