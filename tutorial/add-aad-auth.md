@@ -26,7 +26,7 @@ Actualización `Web.config` para cargar este nuevo archivo. Reemplace `<appSetti
 
 ## <a name="implement-sign-in"></a>Implementar el inicio de sesión
 
-Para empezar, inicialice el middleware OWIN para usar la autenticación de Azure AD para la aplicación. Haga clic con el botón derecho en la carpeta **App_Start** en el explorador de soluciones y elija **Agregar clase >...**. Asigne un nombre `Startup.Auth.cs` al archivo y elija **Agregar**. Reemplace todo el contenido por el código siguiente.
+Para empezar, inicialice el middleware OWIN para usar la autenticación de Azure AD para la aplicación. Haga clic con el botón derecho en la carpeta **App_Start** en el explorador de soluciones y elija **Agregar > clase...**. Asigne un nombre `Startup.Auth.cs` al archivo y elija **Agregar**. Reemplace todo el contenido por el código siguiente.
 
 ```cs
 using Microsoft.Identity.Client;
@@ -109,8 +109,10 @@ namespace graph_tutorial
 
         private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
         {
-            var idClient = new ConfidentialClientApplication(
-                appId, redirectUri, new ClientCredential(appSecret), null, null);
+            var idClient = ConfidentialClientApplicationBuilder.Create(appId)
+                .WithRedirectUri(redirectUri)
+                .WithClientSecret(appSecret)
+                .Build();
 
             string message;
             string debug;
@@ -119,8 +121,8 @@ namespace graph_tutorial
             {
                 string[] scopes = graphScopes.Split(' ');
 
-                var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-                    notification.Code, scopes);
+                var result = await idClient.AcquireTokenByAuthorizationCode(
+                    scopes, notification.Code).ExecuteAsync();
 
                 message = "Access token retrieved.";
                 debug = result.AccessToken;
@@ -170,7 +172,7 @@ public ActionResult Error(string message, string debug)
 }
 ```
 
-Agregue un controlador para controlar el inicio de sesión. Haga clic con el botón secundario en la carpeta **Controladores** en el explorador de soluciones y elija **Agregar controlador de >...** Elija **controlador de MVC 5: vacío** y elija **Agregar**. Asigne un nombre `AccountController` al controlador y elija **Agregar**. Reemplace todo el contenido del archivo por el siguiente código.
+Agregue un controlador para controlar el inicio de sesión. Haga clic con el botón secundario en la carpeta **Controladores** en el explorador de soluciones y elija **Agregar > controlador..**.. Elija **controlador de MVC 5: vacío** y elija **Agregar**. Asigne un nombre `AccountController` al controlador y elija **Agregar**. Reemplace todo el contenido del archivo por el siguiente código.
 
 ```cs
 using Microsoft.Owin.Security;
@@ -215,7 +217,7 @@ Guarde los cambios e inicie el proyecto. Haga clic en el botón de inicio de ses
 
 ### <a name="get-user-details"></a>Obtener detalles del usuario
 
-Para empezar, cree un nuevo archivo que contenga todas las llamadas de Microsoft Graph. Haga clic con el botón secundario en la carpeta **Graph-tutorial** en el explorador de soluciones y elija **Agregar > nueva carpeta**. Asigne un nombre `Helpers`a la carpeta. Haga clic con el botón secundario en esta nueva carpeta y elija **Agregar clase >...**. Asigne un nombre `GraphHelper.cs` al archivo y elija **Agregar**. Reemplace el contenido de este archivo con el código siguiente.
+Para empezar, cree un nuevo archivo que contenga todas las llamadas de Microsoft Graph. Haga clic con el botón secundario en la carpeta **Graph-tutorial** en el explorador de soluciones y elija **Agregar > nueva carpeta**. Asigne un nombre `Helpers`a la carpeta. Haga clic con el botón secundario en esta nueva carpeta y elija **agregar > clase...**. Asigne un nombre `GraphHelper.cs` al archivo y elija **Agregar**. Reemplace el contenido de este archivo con el código siguiente.
 
 ```cs
 using Microsoft.Graph;
@@ -257,8 +259,8 @@ try
 {
     string[] scopes = graphScopes.Split(' ');
 
-    var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-        notification.Code, scopes);
+    var result = await idClient.AcquireTokenByAuthorizationCode(
+        scopes, notification.Code).ExecuteAsync();
 
     var userDetails = await GraphHelper.GetUserDetailsAsync(result.AccessToken);
 
@@ -276,11 +278,12 @@ Ahora, si guarda los cambios e inicia la aplicación, después de iniciar sesió
 
 Ahora que puede obtener tokens, es el momento de implementar una forma de almacenarlos en la aplicación. Como se trata de una aplicación de ejemplo, usaremos la sesión para almacenar los tokens. Una aplicación real usaría una solución de almacenamiento seguro más confiable, como una base de datos.
 
-Haga clic con el botón secundario en la carpeta **Graph-tutorial** en el explorador de soluciones y elija **Agregar > nueva carpeta**. Asigne un nombre `TokenStorage`a la carpeta. Haga clic con el botón secundario en esta nueva carpeta y elija **Agregar clase >...**. Asigne un nombre `SessionTokenStore.cs` al archivo y elija **Agregar**. Reemplace el contenido de este archivo con el código siguiente.
+Haga clic con el botón secundario en la carpeta **Graph-tutorial** en el explorador de soluciones y elija **Agregar > nueva carpeta**. Asigne un nombre `TokenStorage`a la carpeta. Haga clic con el botón secundario en esta nueva carpeta y elija **agregar > clase...**. Asigne un nombre `SessionTokenStore.cs` al archivo y elija **Agregar**. Reemplace el contenido de este archivo con el código siguiente.
 
 ```cs
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Threading;
 using System.Web;
 
@@ -297,29 +300,28 @@ namespace graph_tutorial.TokenStorage
     // Adapted from https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2
     public class SessionTokenStore
     {
-        private static ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private static readonly ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+
         private readonly string userId = string.Empty;
         private readonly string cacheId = string.Empty;
         private readonly string cachedUserId = string.Empty;
-        private HttpContextBase httpContext = null;
+        private HttpContext httpContext = null;
+        private ITokenCache tokenCache;
 
-        TokenCache tokenCache = new TokenCache();
-
-        public SessionTokenStore(string userId, HttpContextBase httpContext)
+        public SessionTokenStore(string userId, HttpContext httpcontext)
         {
             this.userId = userId;
-            cacheId = $"{userId}_TokenCache";
-            cachedUserId = $"{userId}_UserCache";
-            this.httpContext = httpContext;
-            Load();
+            this.cacheId = $"{userId}_TokenCache";
+            this.cachedUserId = $"{userId}_UserCache";
+            this.httpContext = httpcontext;
         }
 
-        public TokenCache GetMsalCacheInstance()
+        public void Initialize(ITokenCache tokenCache)
         {
-            tokenCache.SetBeforeAccess(BeforeAccessNotification);
-            tokenCache.SetAfterAccess(AfterAccessNotification);
+            this.tokenCache = tokenCache;
+            this.tokenCache.SetBeforeAccess(BeforeAccessNotification);
+            this.tokenCache.SetAfterAccess(AfterAccessNotification);
             Load();
-            return tokenCache;
         }
 
         public bool HasData()
@@ -335,28 +337,24 @@ namespace graph_tutorial.TokenStorage
         private void Load()
         {
             sessionLock.EnterReadLock();
-            tokenCache.Deserialize((byte[])httpContext.Session[cacheId]);
+            tokenCache.DeserializeMsalV3((byte[])httpContext.Session[cacheId]);
             sessionLock.ExitReadLock();
         }
 
         private void Persist()
         {
             sessionLock.EnterReadLock();
-            httpContext.Session[cacheId] = tokenCache.Serialize();
+            httpContext.Session[cacheId] = tokenCache.SerializeMsalV3();
             sessionLock.ExitReadLock();
         }
 
-        // Triggered right before MSAL needs to access the cache.
         private void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
-            // Reload the cache from the persistent store in case it changed since the last access.
             Load();
         }
 
-        // Triggered right after MSAL accessed the cache.
         private void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
-            // if the access operation resulted in a cache update
             if (args.HasStateChanged)
             {
                 Persist();
@@ -395,20 +393,21 @@ Ahora, actualice `OnAuthorizationCodeReceivedAsync` la función para crear una i
 ```cs
 private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
 {
-    // Get the signed in user's id and create a token cache
-    string signedInUserId = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-    SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId,
-        notification.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase);
+    var idClient = ConfidentialClientApplicationBuilder.Create(appId)
+        .WithRedirectUri(redirectUri)
+        .WithClientSecret(appSecret)
+        .Build();
 
-    var idClient = new ConfidentialClientApplication(
-        appId, redirectUri, new ClientCredential(appSecret), tokenStore.GetMsalCacheInstance(), null);
+    var signedInUserId = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+    var tokenStore = new SessionTokenStore(signedInUserId, HttpContext.Current);
+    tokenStore.Initialize(idClient.UserTokenCache);
 
     try
     {
         string[] scopes = graphScopes.Split(' ');
 
-        var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-            notification.Code, scopes);
+        var result = await idClient.AcquireTokenByAuthorizationCode(
+            scopes, notification.Code).ExecuteAsync();
 
         var userDetails = await GraphHelper.GetUserDetailsAsync(result.AccessToken);
 
@@ -428,7 +427,7 @@ private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNot
         notification.HandleResponse();
         notification.Response.Redirect($"/Home/Error?message={message}&debug={ex.Message}");
     }
-    catch(Microsoft.Graph.ServiceException ex)
+    catch (Microsoft.Graph.ServiceException ex)
     {
         string message = "GetUserDetailsAsync threw an exception";
         notification.HandleResponse();
@@ -439,7 +438,7 @@ private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNot
 
 Para resumir los cambios:
 
-- El código pasa ahora un `TokenCache` objeto al constructor para `ConfidentialClientApplication`. La biblioteca de MSAL administrará la lógica de almacenamiento de tokens y la actualizará cuando sea necesario.
+- Ahora, el código reemplaza `ConfidentialClientApplication`la memoria caché del token de usuario predeterminado por una `SessionTokenStore`instancia del. La biblioteca de MSAL administrará la lógica de almacenamiento de tokens y la actualizará cuando sea necesario.
 - El código pasa ahora los detalles del usuario obtenidos de Microsoft Graph al `SessionTokenStore` objeto que se va a almacenar en la sesión.
 - Si se realiza correctamente, el código deja de redirigir, simplemente devuelve. Esto permite al middleware OWIN completar el proceso de autenticación.
 
@@ -457,7 +456,7 @@ public ActionResult SignOut()
     if (Request.IsAuthenticated)
     {
         string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, HttpContext);
+        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
 
         tokenStore.Clear();
 
@@ -487,7 +486,7 @@ protected override void OnActionExecuting(ActionExecutingContext filterContext)
     {
         // Get the signed in user's id and create a token cache
         string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, HttpContext);
+        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
 
         if (tokenStore.HasData())
         {
