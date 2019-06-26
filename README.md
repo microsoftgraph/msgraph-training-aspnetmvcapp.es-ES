@@ -24,7 +24,7 @@ Si solo quiere el ejemplo completado que se genera siguiendo este laboratorio, p
 
 ## <a name="watch-the-module"></a>Ver el módulo
 
-Este módulo se ha registrado y está disponible en el canal de YouTube de desarrollo de Office: [Build MVC apps with the Microsoft Graph .net SDK](https://youtu.be/87_gpuFg1Wo)
+Este módulo se ha registrado y está disponible en el canal de YouTube de desarrollo de Office: [Build MVC apps with the Microsoft Graph .net SDK](https://youtu.be/a2teHZ5WuNc)
 
 ## <a name="contributors"></a>Colaboradores
 
@@ -37,8 +37,9 @@ Este módulo se ha registrado y está disponible en el canal de YouTube de desar
 
 ## <a name="version-history"></a>Historial de versiones
 
-| Versión | Fecha               | Comentarios                                             |
+| Versión |        Fecha        |                       Comentarios                       |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.9     | 18 de junio de 2019      | Se actualizó el archivo Léame en grabación de screencast actualizada     |
 | 1.8     | 29 de mayo de 2018       | actualización del contenido de 2019Q4                               |
 | 1.7     | 4 de abril de 2018      | actualización del contenido de 2019Q3                               |
 | 1.6     | 18 de diciembre de 2018  | actualización del contenido de 2019Q2                               |
