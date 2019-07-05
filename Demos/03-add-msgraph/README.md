@@ -4,7 +4,7 @@
 
 Para ejecutar el proyecto completado en esta carpeta, necesita lo siguiente:
 
-- [Visual Studio](https://visualstudio.microsoft.com/vs/) instalado en el equipo de desarrollo. Si no tiene Visual Studio, visite el vínculo anterior de opciones de descarga. (**Nota:** este tutorial se ha escrito con Visual Studio 2017 versión 15,81. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
+- [Visual Studio](https://visualstudio.microsoft.com/vs/) instalado en el equipo de desarrollo. Si no tiene Visual Studio, visite el vínculo anterior de opciones de descarga. (**Nota:** este tutorial se ha escrito con Visual Studio 2019 versión 16.1.4. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
 - Una cuenta de Microsoft personal con un buzón de correo en Outlook.com o una cuenta profesional o educativa de Microsoft.
 
 Si no tiene una cuenta de Microsoft, hay un par de opciones para obtener una cuenta gratuita:
@@ -14,7 +14,7 @@ Si no tiene una cuenta de Microsoft, hay un par de opciones para obtener una cue
 
 ## <a name="register-a-web-application-with-the-azure-active-directory-admin-center"></a>Registro de una aplicación web con el centro de administración de Azure Active Directory
 
-1. Determinar la dirección URL de las aplicaciones de ASP.NET. En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** . En la venta **Propiedades**, busque el valor de la **URL**. Copie este valor.
+1. Determine la dirección URL de SSL de las aplicaciones de ASP.NET. En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** . En la ventana **propiedades** , busque el valor de **dirección URL de SSL**. Copie este valor.
 
     ![Captura de pantalla de la ventana Propiedades de Visual Studio](/tutorial/images/vs-project-url.png)
 
@@ -57,7 +57,6 @@ Si no tiene una cuenta de Microsoft, hay un par de opciones para obtener una cue
 1. Edite `PrivateSettings.config` el archivo y realice los cambios siguientes.
     1. Reemplace `YOUR_APP_ID_HERE` por el **identificador de aplicación** que obtuvo desde el portal de registro de aplicaciones.
     1. Reemplace `YOUR_APP_PASSWORD_HERE` por el **secreto de aplicación** que obtuvo en el portal de registro de aplicaciones.
-    1. Reemplace `PORT` por el número de puerto que se incluye como parte de la dirección URL de las aplicaciones de ASP.net.
 1. Abrir `graph-tutorial.sln` en Visual Studio. En el explorador de soluciones, haga clic con el botón secundario en la solución del **tutorial gráfico** y elija **restaurar paquetes NuGet**.
 
 ## <a name="run-the-sample"></a>Ejecutar el ejemplo

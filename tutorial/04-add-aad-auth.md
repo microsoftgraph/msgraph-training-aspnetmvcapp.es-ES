@@ -8,7 +8,7 @@ En este ejercicio, ampliará la aplicación del ejercicio anterior para admitir 
     <appSettings>
         <add key="ida:AppID" value="YOUR APP ID" />
         <add key="ida:AppSecret" value="YOUR APP PASSWORD" />
-        <add key="ida:RedirectUri" value="http://localhost:PORT/" />
+        <add key="ida:RedirectUri" value="https://localhost:PORT/" />
         <add key="ida:AppScopes" value="User.Read Calendars.Read" />
     </appSettings>
     ```
@@ -142,7 +142,8 @@ Para empezar, inicialice el middleware OWIN para usar la autenticación de Azure
     }
     ```
 
-    Este código configura el middleware OWIN con los valores de y define `PrivateSettings.config` dos métodos de devolución de llamada `OnAuthenticationFailedAsync` y `OnAuthorizationCodeReceivedAsync`. Estos métodos de devolución de llamada se invocarán cuando el proceso de inicio de sesión vuelva de Azure.
+    > [!NOTE]
+    > Este código configura el middleware OWIN con los valores de y define `PrivateSettings.config` dos métodos de devolución de llamada `OnAuthenticationFailedAsync` y `OnAuthorizationCodeReceivedAsync`. Estos métodos de devolución de llamada se invocarán cuando el proceso de inicio de sesión vuelva de Azure.
 
 1. Ahora, actualice `Startup.cs` el archivo para llamar `ConfigureAuth` al método. Reemplace todo el contenido de `Startup.cs` con el código siguiente.
 
@@ -293,6 +294,9 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
 1. Haga clic con el botón secundario en esta nueva carpeta y seleccione **agregar > clase...**. Asigne un nombre `SessionTokenStore.cs` al archivo y seleccione **Agregar**. Reemplace el contenido de este archivo con el código siguiente.
 
     ```cs
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+
     using Microsoft.Identity.Client;
     using Newtonsoft.Json;
     using System.Security.Claims;
@@ -309,83 +313,117 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
             public string Avatar { get; set; }
         }
 
-        // Adapted from https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2
         public class SessionTokenStore
         {
             private static readonly ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-            private readonly string userId = string.Empty;
-            private readonly string cacheId = string.Empty;
-            private readonly string cachedUserId = string.Empty;
             private HttpContext httpContext = null;
-            private ITokenCache tokenCache;
+            private string tokenCacheKey = string.Empty;
+            private string userCacheKey = string.Empty;
 
-            public SessionTokenStore(string userId, HttpContext httpcontext)
+            public SessionTokenStore(ITokenCache tokenCache, HttpContext context, ClaimsPrincipal user)
             {
-                this.userId = userId;
-                this.cacheId = $"{userId}_TokenCache";
-                this.cachedUserId = $"{userId}_UserCache";
-                this.httpContext = httpcontext;
-            }
+                httpContext = context;
 
-            public void Initialize(ITokenCache tokenCache)
-            {
-                this.tokenCache = tokenCache;
-                this.tokenCache.SetBeforeAccess(BeforeAccessNotification);
-                this.tokenCache.SetAfterAccess(AfterAccessNotification);
-                Load();
+                if (tokenCache != null)
+                {
+                    tokenCache.SetBeforeAccess(BeforeAccessNotification);
+                    tokenCache.SetAfterAccess(AfterAccessNotification);
+                }
+
+                var userId = GetUsersUniqueId(user);
+                tokenCacheKey = $"{userId}_TokenCache";
+                userCacheKey = $"{userId}_UserCache";
             }
 
             public bool HasData()
             {
-                return (httpContext.Session[cacheId] != null && ((byte[])httpContext.Session[cacheId]).Length > 0);
+                return (httpContext.Session[tokenCacheKey] != null &&
+                    ((byte[])httpContext.Session[tokenCacheKey]).Length > 0);
             }
 
             public void Clear()
             {
-                httpContext.Session.Remove(cacheId);
-            }
+                sessionLock.EnterWriteLock();
 
-            private void Load()
-            {
-                sessionLock.EnterReadLock();
-                tokenCache.DeserializeMsalV3((byte[])httpContext.Session[cacheId]);
-                sessionLock.ExitReadLock();
-            }
-
-            private void Persist()
-            {
-                sessionLock.EnterReadLock();
-                httpContext.Session[cacheId] = tokenCache.SerializeMsalV3();
-                sessionLock.ExitReadLock();
+                try
+                {
+                    httpContext.Session.Remove(tokenCacheKey);
+                }
+                finally
+                {
+                    sessionLock.ExitWriteLock();
+                }
             }
 
             private void BeforeAccessNotification(TokenCacheNotificationArgs args)
             {
-                Load();
+                sessionLock.EnterReadLock();
+
+                try
+                {
+                    // Load the cache from the session
+                    args.TokenCache.DeserializeMsalV3((byte[])httpContext.Session[tokenCacheKey]);
+                }
+                finally
+                {
+                    sessionLock.ExitReadLock();
+                }
             }
 
             private void AfterAccessNotification(TokenCacheNotificationArgs args)
             {
                 if (args.HasStateChanged)
                 {
-                    Persist();
+                    sessionLock.EnterWriteLock();
+
+                    try
+                    {
+                        // Store the serialized cache in the session
+                        httpContext.Session[tokenCacheKey] = args.TokenCache.SerializeMsalV3();
+                    }
+                    finally
+                    {
+                        sessionLock.ExitWriteLock();
+                    }
                 }
             }
 
             public void SaveUserDetails(CachedUser user)
             {
-                sessionLock.EnterReadLock();
-                httpContext.Session[cachedUserId] = JsonConvert.SerializeObject(user);
-                sessionLock.ExitReadLock();
+
+                sessionLock.EnterWriteLock();
+                httpContext.Session[userCacheKey] = JsonConvert.SerializeObject(user);
+                sessionLock.ExitWriteLock();
             }
 
             public CachedUser GetUserDetails()
             {
                 sessionLock.EnterReadLock();
-                var cachedUser = JsonConvert.DeserializeObject<CachedUser>((string)httpContext.Session[cachedUserId]);
+                var cachedUser = JsonConvert.DeserializeObject<CachedUser>((string)httpContext.Session[userCacheKey]);
                 sessionLock.ExitReadLock();
                 return cachedUser;
+            }
+
+            private string GetUsersUniqueId(ClaimsPrincipal user)
+            {
+                // Combine the user's object ID with their tenant ID
+
+                if (user != null)
+                {
+                    var userObjectId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value ??
+                        user.FindFirst("oid").Value;
+
+                    var userTenantId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value ??
+                        user.FindFirst("tid").Value;
+
+                    if (!string.IsNullOrEmpty(userObjectId) && !string.IsNullOrEmpty(userTenantId))
+                    {
+                        return $"{userObjectId}.{userTenantId}";
+                    }
+                }
+
+                return null;
             }
         }
     }
@@ -395,7 +433,6 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
 
     ```cs
     using graph_tutorial.TokenStorage;
-    using System.IdentityModel.Claims;
     ```
 
 1. Reemplace la función `OnAuthorizationCodeReceivedAsync` existente por lo siguiente.
@@ -408,9 +445,8 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
             .WithClientSecret(appSecret)
             .Build();
 
-        var signedInUserId = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-        var tokenStore = new SessionTokenStore(signedInUserId, HttpContext.Current);
-        tokenStore.Initialize(idClient.UserTokenCache);
+        var signedInUser = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+        var tokenStore = new SessionTokenStore(idClient.UserTokenCache, HttpContext.Current, signedInUser);
 
         try
         {
@@ -466,8 +502,8 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
     {
         if (Request.IsAuthenticated)
         {
-            string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
+            var tokenStore = new SessionTokenStore(null,
+                System.Web.HttpContext.Current, ClaimsPrincipal.Current);
 
             tokenStore.Clear();
 
@@ -495,9 +531,9 @@ Ahora que puede obtener tokens, es el momento de implementar una forma de almace
     {
         if (Request.IsAuthenticated)
         {
-            // Get the signed in user's id and create a token cache
-            string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
+            // Get the user's token cache
+            var tokenStore = new SessionTokenStore(null,
+                System.Web.HttpContext.Current, ClaimsPrincipal.Current);
 
             if (tokenStore.HasData())
             {
@@ -531,4 +567,4 @@ En este punto, la aplicación tiene un token de acceso, que se envía `Authoriza
 
 Sin embargo, este token es de corta duración. El token expira una hora después de su emisión. Aquí es donde el token de actualización se vuelve útil. El token de actualización permite que la aplicación solicite un nuevo token de acceso sin que el usuario tenga que iniciar sesión de nuevo.
 
-Debido a que la aplicación usa la biblioteca de MSAL `TokenCache` y un objeto, no es necesario implementar ninguna lógica de actualización de tokens. El `ConfidentialClientApplication.AcquireTokenSilentAsync` método realiza toda la lógica por usted. Primero comprueba el token almacenado en caché y, si no lo ha expirado, lo devuelve. Si ha expirado, usa el token de actualización almacenado en caché para obtener uno nuevo. Este método se utilizará en el siguiente módulo.
+Debido a que la aplicación usa la biblioteca de MSAL y la `TokenCache` serialización del objeto, no es necesario implementar ninguna lógica de actualización de tokens. El `ConfidentialClientApplication.AcquireTokenSilentAsync` método realiza toda la lógica por usted. Primero comprueba el token almacenado en caché y, si no lo ha expirado, lo devuelve. Si ha expirado, usa el token de actualización almacenado en caché para obtener uno nuevo. Este método se utilizará en el siguiente módulo.

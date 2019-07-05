@@ -2,7 +2,7 @@
 
 En este ejercicio, creará un nuevo registro de aplicaciones Web de Azure AD con el centro de administración de Azure Active Directory.
 
-1. Determine la dirección URL de la aplicación ASP.NET. En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** . En la venta **Propiedades**, busque el valor de la **URL**. Copie este valor.
+1. Determine la dirección URL de SSL de la aplicación ASP.NET. En el explorador de soluciones de Visual Studio, seleccione el proyecto **gráfico-tutorial** . En la ventana **propiedades** , busque el valor de **dirección URL de SSL**. Copie este valor.
 
     ![Captura de pantalla de la ventana Propiedades de Visual Studio](./images/vs-project-url.png)
 
