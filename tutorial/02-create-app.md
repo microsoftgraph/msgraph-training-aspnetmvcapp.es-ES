@@ -19,7 +19,7 @@ Empiece por crear un proyecto de MVC de ASP.NET.
 
     ![Visual Studio 2019 cuadro de diálogo Crear nueva aplicación Web de ASP.NET](./images/vs-create-new-asp-app.png)
 
-1. Presione **F5** o seleccione **depurar > iniciar**depuración. Si todo funciona, el explorador predeterminado debe abrir y mostrar una página ASP.NET predeterminada.
+1. Presione **F5** o seleccione **depurar > iniciar depuración**. Si todo funciona, el explorador predeterminado debe abrir y mostrar una página ASP.NET predeterminada.
 
 ## <a name="add-nuget-packages"></a>Agregar paquetes NuGet
 
@@ -39,8 +39,8 @@ Antes de continuar, actualice el `bootstrap` paquete Nuget e instale algunos paq
     Install-Package Microsoft.Owin.Host.SystemWeb
     Install-Package Microsoft.Owin.Security.OpenIdConnect
     Install-Package Microsoft.Owin.Security.Cookies
-    Install-Package Microsoft.Identity.Client -Version 4.0.0
-    Install-Package Microsoft.Graph -Version 1.15.0
+    Install-Package Microsoft.Identity.Client -Version 4.3.1
+    Install-Package Microsoft.Graph -Version 1.17.0
     ```
 
 ## <a name="design-the-app"></a>Diseñar la aplicación

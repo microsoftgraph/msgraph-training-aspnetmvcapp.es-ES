@@ -4,7 +4,7 @@
 
 Para ejecutar el proyecto completado en esta carpeta, necesita lo siguiente:
 
-- [Visual Studio](https://visualstudio.microsoft.com/vs/) instalado en el equipo de desarrollo. Si no tiene Visual Studio, visite el vínculo anterior de opciones de descarga. (**Nota:** este tutorial se ha escrito con Visual Studio 2019 versión 16.1.4. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
+- [Visual Studio](https://visualstudio.microsoft.com/vs/) instalado en el equipo de desarrollo. Si no tiene Visual Studio, visite el vínculo anterior de opciones de descarga. (**Nota:** este tutorial se ha escrito con Visual Studio 2019 versión 16.2.3. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
 - Una cuenta de Microsoft personal con un buzón de correo en Outlook.com o una cuenta profesional o educativa de Microsoft.
 
 Si no tiene una cuenta de Microsoft, hay un par de opciones para obtener una cuenta gratuita:
@@ -61,4 +61,4 @@ Si no tiene una cuenta de Microsoft, hay un par de opciones para obtener una cue
 
 ## <a name="run-the-sample"></a>Ejecutar el ejemplo
 
-En Visual Studio, presione **F5** o elija **depurar > iniciar**depuración.
+En Visual Studio, presione **F5** o elija **depurar > iniciar depuración**.
