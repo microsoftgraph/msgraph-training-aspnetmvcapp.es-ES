@@ -13,7 +13,7 @@ Este tutorial le enseña a crear una aplicación web MVC de ASP.NET que use la A
 Antes de iniciar este tutorial, debe tener [Visual Studio](https://visualstudio.microsoft.com/vs/) instalado en el equipo de desarrollo. Si no tiene Visual Studio, visite el vínculo anterior de opciones de descarga.
 
 > [!NOTE]
-> Este tutorial se ha escrito con Visual Studio 2019 versión 16.1.4. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
+> Este tutorial se ha escrito con Visual Studio 2019 versión 16.4.0. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
 
 ## <a name="watch-the-tutorial"></a>Vea el tutorial
 

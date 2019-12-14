@@ -39,12 +39,13 @@ Este módulo se ha registrado y está disponible en el canal de YouTube de desar
 
 | Versión |        Fecha        |                       Comentarios                       |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1,11    | 9 de diciembre de 2019   | actualización del contenido de 2020Q2                               |
 | 1,10    | 9 de septiembre de 2019  | actualización del contenido de 2020Q1                               |
 | 1.9     | 18 de junio de 2019      | Se actualizó el archivo Léame en grabación de screencast actualizada     |
 | 1.8     | 29 de mayo de 2018       | actualización del contenido de 2019Q4                               |
 | 1.7     | 4 de abril de 2018      | actualización del contenido de 2019Q3                               |
 | 1.6     | 18 de diciembre de 2018  | actualización del contenido de 2019Q2                               |
-| 1.5     | 27 de noviembre de 2018  | Incorporado a docs.microsoft.com/graph                |
+| 1,5     | 27 de noviembre de 2018  | Incorporado a docs.microsoft.com/graph                |
 | 1.4     | 12 de septiembre de 2018 | actualización del contenido de 2019Q1                               |
 | 1.3     | 24 de agosto de 2018    | Módulos revisados para la coherencia con otras capacitaciones. |
 | 1.2     | 28 de junio de 2018      | Se ha agregado una screencast.                                    |
